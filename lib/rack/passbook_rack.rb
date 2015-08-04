@@ -7,8 +7,11 @@ module Rack
     end
 
     def call(env)
+
       @parameters = {}
       @parameters['ifModifiedSince'] = env['HTTP_IF_MODIFIED_SINCE']
+      @parameters['path'] = env['PATH_INFO']
+      @parameters['host'] = env['HOST']
       @parameters['authToken'] = env['HTTP_AUTHORIZATION'].gsub(/\w*Pass /,'') if env['HTTP_AUTHORIZATION']
       @parameters.merge!(Rack::Utils.parse_nested_query(env['QUERY_STRING']))
       method_and_params = find_method env['PATH_INFO']
